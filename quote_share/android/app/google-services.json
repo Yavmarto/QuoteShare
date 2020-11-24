@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "949130302336",
+    "firebase_url": "https://quote-share.firebaseio.com",
+    "project_id": "quote-share",
+    "storage_bucket": "quote-share.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:949130302336:android:79d9cb2cacb2fe8f5ee765",
+        "android_client_info": {
+          "package_name": "com.example.quote_share"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "949130302336-44je9tj6ur8tc5t9og4083m969kfagsl.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBLqvvOvekJOVhYKuTAB5yn85zFmyPAQHI"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "949130302336-44je9tj6ur8tc5t9og4083m969kfagsl.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
