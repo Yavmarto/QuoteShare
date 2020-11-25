@@ -1,4 +1,4 @@
-# my_app
+# quote_share
 
 A new Flutter project.
 

@@ -1,4 +1,4 @@
-name: my_app
+name: quote_share
 description: A new Flutter project.
 
 # The following line prevents the package from being accidentally published to
@@ -25,11 +25,13 @@ dependencies:
   rating_bar: ^0.2.0
   social_share: ^2.0.5
   screenshot: ^0.2.0
-  firebase_core: ^0.5.2
-  firebase_auth: ^0.18.3
-  cloud_firestore: ^0.14.3
+
   flutter:
     sdk: flutter
+
+  firebase_core: ^0.4.0
+  firebase_auth: ^0.14.0
+  cloud_firestore: ^0.12.9
 
 
   # The following adds the Cupertino Icons font to your application.

@@ -12,7 +12,4 @@ class Quote {
       content: json['quote'],
     );
   }
-
-
-
 }

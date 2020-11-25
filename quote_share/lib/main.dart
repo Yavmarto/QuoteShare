@@ -5,17 +5,17 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
-import 'package:my_app/quote.dart';
+import 'package:quote_share/quote.dart';
 import 'package:rating_bar/rating_bar.dart';
 
 
 import 'package:social_share/social_share.dart';
 
 void main() {
-  runApp(MyApp());
+  runApp(QuoteShare());
 }
 
-class MyApp extends StatelessWidget {
+class QuoteShare extends StatelessWidget {
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
