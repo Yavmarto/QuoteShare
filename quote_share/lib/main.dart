@@ -3,10 +3,8 @@ import 'package:firebase_core/firebase_core.dart';
 
 import 'dart:async';
 
-import 'package:flutter/material.dart';
-import 'package:quote_share/firebase_connection.dart';
 import 'package:quote_share/home.dart';
-import 'package:quote_share/quote.dart';
+import 'package:quote_share/personal.dart';
 
 
 void main() {
@@ -78,10 +76,7 @@ class MainNagivationState extends State<MainNavigation> {
       'Index 1: Test',
       style: optionStyle,
     ),
-    Text(
-      'Index 2: School',
-      style: optionStyle,
-    ),
+    Peronal(),
   ];
 
 

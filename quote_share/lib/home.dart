@@ -19,7 +19,6 @@ class Home extends StatefulWidget{
 }
 
 class HomeState extends State<Home> {
-  final FirebaseConnection connection = new FirebaseConnection();
   Future<Quote> futureQuote;
   Quote currentQuote;
   int _ratingStar = 0;
@@ -34,8 +33,8 @@ class HomeState extends State<Home> {
   }
 
   void signIn() {
-    connection.auth.authStateChanges().listen((User user) {
-      connection.localUser = user;
+    FirebaseConnection().auth.authStateChanges().listen((User user) {
+      FirebaseConnection().localUser = user;
       if (user != null) {
         setState(() {
           refreshQuote();
@@ -44,11 +43,11 @@ class HomeState extends State<Home> {
       }
     });
 
-    connection.signIn();
+    FirebaseConnection().signIn();
   }
 
   void addRating() {
-    connection.uploadRating(currentQuote, _ratingStar);
+    FirebaseConnection().uploadRating(currentQuote, _ratingStar);
   }
 
   // Fetches Quote from server
