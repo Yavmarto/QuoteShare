@@ -7,29 +7,25 @@ import 'package:quote_share/quote.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
 import 'package:http/http.dart' as http;
+import 'package:quote_share/quote_card.dart';
 import 'package:rating_bar/rating_bar.dart';
 import 'package:social_share/social_share.dart';
 
-// Implements Home Page for Quote
-class HomePage extends StatefulWidget {
-  HomePage({Key key, this.title}) : super(key: key);
+class Home extends StatefulWidget{
 
-  final String title;
+    @override
+  HomeState createState() => new HomeState();
 
-  @override
-  HomePageState createState() => new HomePageState(title);
 }
 
-class HomePageState extends State<HomePage> {
-  HomePageState(this.bartitle);
-
+class HomeState extends State<Home> {
   final FirebaseConnection connection = new FirebaseConnection();
-  final String bartitle;
   Future<Quote> futureQuote;
   Quote currentQuote;
   int _ratingStar = 0;
   int _platformVersion = 1;
   String quoteText = "No Quote";
+  String authorText = "No Author";
 
   @override
   void initState() {
@@ -52,7 +48,7 @@ class HomePageState extends State<HomePage> {
   }
 
   void addRating() {
-    connection.addRating(currentQuote, _ratingStar);
+    connection.uploadRating(currentQuote, _ratingStar);
   }
 
   // Fetches Quote from server
@@ -85,7 +81,8 @@ class HomePageState extends State<HomePage> {
         if (snapshot.hasData) {
           currentQuote = snapshot.data;
           quoteText = snapshot.data.content;
-          return Text(quoteText);
+          authorText = snapshot.data.author;
+          return QuoteCard(quoteText, authorText);
         } else if (snapshot.hasError) {
           return Text("${snapshot.error}");
         }
@@ -97,16 +94,7 @@ class HomePageState extends State<HomePage> {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      title: bartitle,
-      theme: ThemeData(
-        primarySwatch: Colors.blue,
-      ),
-      home: Scaffold(
-          appBar: AppBar(
-            title: Text(bartitle),
-          ),
-          body: Center(
+    return Center(
             child: SizedBox(
                 width: 350,
                 child: Column(children: [
@@ -178,7 +166,6 @@ class HomePageState extends State<HomePage> {
                     ],
                   )
                 ])),
-          )),
-    );
+          );
   }
 }

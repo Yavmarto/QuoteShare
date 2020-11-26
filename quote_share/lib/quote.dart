@@ -2,6 +2,7 @@ class Quote {
   final int id;
   final String author;
   final String content;
+  int rating;
 
   Quote({this.id, this.author, this.content});
 
