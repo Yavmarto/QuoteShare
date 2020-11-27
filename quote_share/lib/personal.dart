@@ -11,14 +11,16 @@ import 'package:quote_share/quote_card.dart';
 import 'package:rating_bar/rating_bar.dart';
 import 'package:social_share/social_share.dart';
 
-class Peronal extends StatefulWidget{
+/// Implements Personal Widget
+class Personal extends StatefulWidget{
 
     @override
   PersonalState createState() => new PersonalState();
 
 }
 
-class PersonalState extends State<Peronal> {
+/// Implements Personal State
+class PersonalState extends State<Personal> {
   
   @override
   Widget build(BuildContext context) {

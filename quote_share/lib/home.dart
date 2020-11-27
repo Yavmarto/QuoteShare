@@ -11,19 +11,31 @@ import 'package:quote_share/quote_card.dart';
 import 'package:rating_bar/rating_bar.dart';
 import 'package:social_share/social_share.dart';
 
-class Home extends StatefulWidget{
 
-    @override
+/// Implements Home Widget
+class Home extends StatefulWidget {
+  @override
   HomeState createState() => new HomeState();
-
 }
 
+/// Implements Home State
 class HomeState extends State<Home> {
+  /// Future Quote
   Future<Quote> futureQuote;
+
+  /// Current Quote
   Quote currentQuote;
+
+  /// Star Rating
   int _ratingStar = 0;
+
+  /// Platform version
   int _platformVersion = 1;
+
+  /// Quote Text
   String quoteText = "No Quote";
+
+  /// Author Text
   String authorText = "No Author";
 
   @override
@@ -32,6 +44,7 @@ class HomeState extends State<Home> {
     signIn();
   }
 
+  /// Sign in Anonymously
   void signIn() {
     FirebaseConnection().auth.authStateChanges().listen((User user) {
       FirebaseConnection().localUser = user;
@@ -46,11 +59,12 @@ class HomeState extends State<Home> {
     FirebaseConnection().signIn();
   }
 
+  /// Add Rating to database
   void addRating() {
     FirebaseConnection().uploadRating(currentQuote, _ratingStar);
   }
 
-  // Fetches Quote from server
+  /// Fetches Quote from server
   Future<Quote> fetchQuote() async {
     final response =
         await http.get('http://quotes.stormconsultancy.co.uk/random.json');
@@ -67,12 +81,12 @@ class HomeState extends State<Home> {
     }
   }
 
-// Refreshes quote
+  /// Refreshes quote
   void refreshQuote() {
     futureQuote = fetchQuote();
   }
 
-// Creates Text widget from quote
+  /// Creates Text widget from quote
   FutureBuilder<Quote> createTextFromQuote() {
     return FutureBuilder<Quote>(
       future: futureQuote,
@@ -94,77 +108,75 @@ class HomeState extends State<Home> {
   @override
   Widget build(BuildContext context) {
     return Center(
-            child: SizedBox(
-                width: 350,
-                child: Column(children: [
-                  createTextFromQuote(),
-                  Text(
-                    'Rating : $_ratingStar',
-                    style: Theme.of(context).textTheme.bodyText1,
-                  ),
-                  SizedBox(height: 8),
-                  RatingBar(
-                    onRatingChanged: (rating) =>
-                        setState(() => _ratingStar = rating.toInt()),
-                    filledIcon: Icons.star,
-                    emptyIcon: Icons.star_border,
-                  ),
-                  IconButton(
-                    icon: Icon(Icons.refresh),
-                    tooltip: 'Refresh quote',
-                    onPressed: () {
-                      setState(() {
-                        refreshQuote();
-                      });
-                    },
-                  ),
-                  IconButton(
-                    icon: Icon(Icons.upload_file), 
-                    onPressed: () {
-                    setState(() {
-                      addRating();
+      child: SizedBox(
+          width: 350,
+          child: Column(children: [
+            createTextFromQuote(),
+            Text(
+              'Rating : $_ratingStar',
+              style: Theme.of(context).textTheme.bodyText1,
+            ),
+            SizedBox(height: 8),
+            RatingBar(
+              onRatingChanged: (rating) =>
+                  setState(() => _ratingStar = rating.toInt()),
+              filledIcon: Icons.star,
+              emptyIcon: Icons.star_border,
+            ),
+            IconButton(
+              icon: Icon(Icons.refresh),
+              tooltip: 'Refresh quote',
+              onPressed: () {
+                setState(() {
+                  refreshQuote();
+                });
+              },
+            ),
+            IconButton(
+                icon: Icon(Icons.upload_file),
+                onPressed: () {
+                  setState(() {
+                    addRating();
+                  });
+                }),
+            Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: <Widget>[
+                Text(
+                  'Running on: $_platformVersion\n',
+                  textAlign: TextAlign.center,
+                ),
+                RaisedButton(
+                  onPressed: () async {
+                    SocialShare.copyToClipboard(
+                      "This is Social Share plugin",
+                    ).then((data) {
+                      print(data);
                     });
-                    
-                    }),
-
-                  Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    children: <Widget>[
-                      Text(
-                        'Running on: $_platformVersion\n',
-                        textAlign: TextAlign.center,
-                      ),
-                      RaisedButton(
-                        onPressed: () async {
-                          SocialShare.copyToClipboard(
-                            "This is Social Share plugin",
-                          ).then((data) {
-                            print(data);
-                          });
-                        },
-                        child: Text("Copy to clipboard"),
-                      ),
-                      RaisedButton(
-                        onPressed: () async {
-                          SocialShare.shareTwitter(quoteText,
-                                  hashtags: [
-                                    "quotes",
-                                    "developer",
-                                    "funny",
-                                    "inspiring"
-                                  ],
-                                  url: "",
-                                  trailingText: "")
-                              .then((data) {
-                            print(data);
-                          });
-                        },
-                        child: Text("Share on twitter"),
-                      ),
-                    ],
-                  )
-                ])),
-          );
+                  },
+                  child: Text("Copy to clipboard"),
+                ),
+                RaisedButton(
+                  onPressed: () async {
+                    SocialShare.shareTwitter(quoteText,
+                            hashtags: [
+                              "quotes",
+                              "developer",
+                              "funny",
+                              "inspiring"
+                            ],
+                            url: "",
+                            trailingText: "")
+                        .then((data) {
+                      print(data);
+                    });
+                  },
+                  child: Text("Share on twitter"),
+                ),
+              ],
+            )
+          ])),
+    );
   }
 }

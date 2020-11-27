@@ -12,7 +12,7 @@ void main() {
   runApp(QuoteShare());
 }
 
-// Main Quote Share Widget
+/// Main Quote Share Widget
 class QuoteShare extends StatelessWidget {
   final String title = "Quote Share";
 
@@ -49,7 +49,7 @@ class QuoteShare extends StatelessWidget {
   }
 }
 
-// Main Nagivation
+/// Main Nagivation Widget
 class MainNavigation extends StatefulWidget {
   MainNavigation({Key key, this.title}) : super(key: key);
 
@@ -59,27 +59,31 @@ class MainNavigation extends StatefulWidget {
   MainNagivationState createState() => new MainNagivationState(title);
 }
 
-// Main Navigation State
+/// Main Navigation State
 class MainNagivationState extends State<MainNavigation> {
   MainNagivationState(this.bartitle);
 
+  /// Bar title
   final String bartitle;
 
+  /// Text style option
   static const TextStyle optionStyle =
       TextStyle(fontSize: 30, fontWeight: FontWeight.bold);
 
+  /// Selected index
   int _selectedIndex = 0;
   
+  /// Navigation Options
   List<Widget> _widgetOptions = [
     Home(),
     Text(
       'Index 1: Test',
       style: optionStyle,
     ),
-    Peronal(),
+    Personal(),
   ];
 
-
+  /// Switch selected index on tap
   void _onItemTapped(int index) {
     setState(() {
       _selectedIndex = index;

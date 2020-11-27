@@ -1,10 +1,13 @@
 import 'package:flutter/material.dart';
 
-// Implements Quote Card
+// Implements Quote Card Widget
 class QuoteCard extends StatelessWidget {
   QuoteCard(this.content, this.author);
 
+  /// Content
   final String content;
+  
+  /// Author
   final String author;
 
   @override

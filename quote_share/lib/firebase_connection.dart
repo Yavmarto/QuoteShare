@@ -4,19 +4,33 @@ import 'package:flutter/material.dart';
 import 'package:quote_share/quote.dart';
 import 'package:quote_share/quote_card.dart';
 
+/// Implements Firebase connection
 class FirebaseConnection {
+
+  /// Firebase connection instance
   static final FirebaseConnection _instance = FirebaseConnection._internal();
+
+  /// Firebase authentication instance
   final FirebaseAuth auth = FirebaseAuth.instance;
+  
+  /// Firebase Firestore instance
   final FirebaseFirestore firestore = FirebaseFirestore.instance;
+  
+  /// Quotes Collection
   CollectionReference quotes = FirebaseFirestore.instance.collection('quotes');
 
+  /// Firebase Connection factory
   factory FirebaseConnection() {
     return _instance;
   }
 
-  FirebaseConnection._internal();
+  /// Local User
   User localUser;
+
+  /// User Credentials
   UserCredential credential;
+
+  FirebaseConnection._internal();
 
   // Sign in Anonymously
   void signIn() async {
@@ -69,5 +83,4 @@ class FirebaseConnection {
       },
     );
   }
-
 }

@@ -1,7 +1,17 @@
+
+/// Implements Quote Object
 class Quote {
+
+  /// Quote ID
   final int id;
+
+  /// Author
   final String author;
+
+  /// Content
   final String content;
+
+  /// Rating
   int rating;
 
   Quote({this.id, this.author, this.content});
