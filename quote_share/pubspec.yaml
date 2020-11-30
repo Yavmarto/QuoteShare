@@ -22,18 +22,24 @@ environment:
 
 dependencies:
   http: ^0.12.2
-  rating_bar: ^0.2.0
+  
   social_share: ^2.0.5
-  screenshot: ^0.2.0
-
+  
   flutter:
     sdk: flutter
 
   firebase_core: "^0.5.2+1"
   firebase_auth: "^0.18.3+1"
   cloud_firestore: "^0.14.3+1"
+
   dartdoc: ^0.37.0
+
+  rating_bar: ^0.2.0
   eva_icons_flutter: ^2.0.1
+  screenshot: ^0.2.0
+
+  mockito: ^4.1.3
+  cloud_firestore_mocks: ^0.5.2+1
 
   # The following adds the Cupertino Icons font to your application.
   # Use with the CupertinoIcons class for iOS style icons.

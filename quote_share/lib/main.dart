@@ -1,11 +1,13 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
+import 'package:quote_share/auth.dart';
 
 import 'dart:async';
 
 import 'package:quote_share/home.dart';
 import 'package:quote_share/personal.dart';
-
 
 void main() {
   WidgetsFlutterBinding.ensureInitialized();
@@ -43,7 +45,7 @@ class QuoteShare extends StatelessWidget {
         }
 
         // Otherwise, show something whilst waiting for initialization to complete
-        return  CircularProgressIndicator();
+        return CircularProgressIndicator();
       },
     );
   }
@@ -63,6 +65,9 @@ class MainNavigation extends StatefulWidget {
 class MainNagivationState extends State<MainNavigation> {
   MainNagivationState(this.bartitle);
 
+  final FirebaseAuth _auth = FirebaseAuth.instance;
+  final FirebaseFirestore _firestore = FirebaseFirestore.instance;
+
   /// Bar title
   final String bartitle;
 
@@ -72,16 +77,9 @@ class MainNagivationState extends State<MainNavigation> {
 
   /// Selected index
   int _selectedIndex = 0;
-  
+
   /// Navigation Options
-  List<Widget> _widgetOptions = [
-    Home(),
-    Text(
-      'Index 1: Test',
-      style: optionStyle,
-    ),
-    Personal(),
-  ];
+  List<Widget> _widgetOptions = [];
 
   /// Switch selected index on tap
   void _onItemTapped(int index) {
@@ -92,6 +90,33 @@ class MainNagivationState extends State<MainNavigation> {
 
   @override
   Widget build(BuildContext context) {
+    return StreamBuilder(
+      stream: Auth(auth: _auth).user,
+      builder: (BuildContext context, AsyncSnapshot<User> snapshot) {
+        if (snapshot.connectionState == ConnectionState.active) {
+          if (snapshot.data?.uid == null) {
+            const Scaffold(
+              body: Center(
+                child: Text("Error connecting, try again later..."),
+              ),
+            );
+          } else {
+            
+            _widgetOptions.addAll([
+              Home(firestore: _firestore, auth: _auth),
+              Personal(firestore: _firestore, auth: _auth)
+            ]);
+
+            return app();
+          }
+        } else {
+          return CircularProgressIndicator();
+        }
+      },
+    );
+  }
+
+  MaterialApp app() {
     return MaterialApp(
       title: bartitle,
       theme: ThemeData(
@@ -109,16 +134,12 @@ class MainNagivationState extends State<MainNavigation> {
               label: 'Home',
             ),
             BottomNavigationBarItem(
-              icon: Icon(Icons.people),
-              label: 'Rated Quotes',
-            ),
-            BottomNavigationBarItem(
               icon: Icon(Icons.person),
               label: 'My Quotes',
             ),
           ],
           currentIndex: _selectedIndex,
-          selectedItemColor: Colors.amber[800],
+          selectedItemColor: Colors.blue,
           onTap: _onItemTapped,
         ),
       ),

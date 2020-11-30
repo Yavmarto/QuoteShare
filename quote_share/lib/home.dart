@@ -1,8 +1,9 @@
 import 'dart:async';
 import 'dart:convert';
 
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
-import 'package:quote_share/firebase_connection.dart';
+import 'package:quote_share/database.dart';
 import 'package:quote_share/quote.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
@@ -14,6 +15,11 @@ import 'package:social_share/social_share.dart';
 
 /// Implements Home Widget
 class Home extends StatefulWidget {
+  final FirebaseAuth auth;
+  final FirebaseFirestore firestore;
+
+  const Home({Key key, this.auth, this.firestore}) : super(key: key);
+
   @override
   HomeState createState() => new HomeState();
 }
@@ -41,27 +47,13 @@ class HomeState extends State<Home> {
   @override
   void initState() {
     super.initState();
-    signIn();
+    refreshQuote();
   }
 
-  /// Sign in Anonymously
-  void signIn() {
-    FirebaseConnection().auth.authStateChanges().listen((User user) {
-      FirebaseConnection().localUser = user;
-      if (user != null) {
-        setState(() {
-          refreshQuote();
-        });
-        print("signed in");
-      }
-    });
-
-    FirebaseConnection().signIn();
-  }
 
   /// Add Rating to database
   void addRating() {
-    FirebaseConnection().uploadRating(currentQuote, _ratingStar);
+    Database(firestore: widget.firestore).uploadRating(currentQuote, _ratingStar, widget.auth.currentUser);
   }
 
   /// Fetches Quote from server

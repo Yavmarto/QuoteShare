@@ -1,4 +1,5 @@
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_core/firebase_core.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:quote_share/quote.dart';
@@ -6,16 +7,15 @@ import 'package:quote_share/quote_card.dart';
 
 /// Implements Firebase connection
 class FirebaseConnection {
-
   /// Firebase connection instance
   static final FirebaseConnection _instance = FirebaseConnection._internal();
-
-  /// Firebase authentication instance
-  final FirebaseAuth auth = FirebaseAuth.instance;
   
+  /// Firebase authentication instance
+  FirebaseAuth auth = FirebaseAuth.instance;
+
   /// Firebase Firestore instance
   final FirebaseFirestore firestore = FirebaseFirestore.instance;
-  
+
   /// Quotes Collection
   CollectionReference quotes = FirebaseFirestore.instance.collection('quotes');
 
@@ -33,8 +33,15 @@ class FirebaseConnection {
   FirebaseConnection._internal();
 
   // Sign in Anonymously
-  void signIn() async {
-    credential = await auth.signInAnonymously();
+  Future<String> signIn() async {
+    try {
+      credential = await auth.signInAnonymously();
+      return "Success";
+    } on FirebaseAuthException catch (e) {
+      return e.message;
+    } catch (e) {
+      rethrow;
+    }
   }
 
   // Save new quote with rating to database
@@ -61,22 +68,17 @@ class FirebaseConnection {
       future: quotes.doc(localUser.uid).get(),
       builder:
           (BuildContext context, AsyncSnapshot<DocumentSnapshot> snapshot) {
-
         if (snapshot.hasError) {
           return Text("Something went wrong");
         }
 
         if (snapshot.hasData) {
-            List<QuoteCard> cards = [];
+          List<QuoteCard> cards = [];
 
-        snapshot.data.data().forEach((key, value) { 
-          cards.add(new QuoteCard(value["content"], value["author"]));
-        });
-        return ListView(
-          padding: EdgeInsets.all(8),
-          children: cards
-        );
-
+          snapshot.data.data().forEach((key, value) {
+            cards.add(new QuoteCard(value["content"], value["author"]));
+          });
+          return ListView(padding: EdgeInsets.all(8), children: cards);
         }
 
         return Text("loading");
