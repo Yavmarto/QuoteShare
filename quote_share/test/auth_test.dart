@@ -42,16 +42,16 @@ void main() {
       mockFirebaseAuth.signInAnonymously(),
     ).thenAnswer((realInvocation) => null);
 
-    expect(await auth.signIn(), "Success");
+    expect(await auth.signInAnonymously(), "Success");
   });
 
   /// Test: Check if Sign in Anonymously Exception works
   test("Sign in Anonymouslyexception", () async {
     when(
-      auth.signIn(),
+      auth.signInAnonymously(),
     ).thenAnswer((realInvocation) =>
         throw FirebaseAuthException(message: "Firebase Error"));
 
-    expect(await auth.signIn(), "Firebase Error");
+    expect(await auth.signInAnonymously(), "Firebase Error");
   });
 }
