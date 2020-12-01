@@ -2,7 +2,6 @@ import 'dart:async';
 import 'dart:convert';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:eva_icons_flutter/eva_icons_flutter.dart';
 import 'package:flutter/material.dart';
 import 'package:quote_share/database.dart';
 import 'package:quote_share/quote.dart';
@@ -10,7 +9,9 @@ import 'package:firebase_auth/firebase_auth.dart';
 
 import 'package:http/http.dart' as http;
 import 'package:quote_share/quote_card.dart';
+import 'package:rating_bar/rating_bar.dart';
 import 'package:social_share/social_share.dart';
+
 
 /// Implements Home Widget
 class Home extends StatefulWidget {
@@ -31,6 +32,12 @@ class HomeState extends State<Home> {
   /// Current Quote
   Quote currentQuote;
 
+  /// Star Rating
+  int _ratingStar = 0;
+
+  /// Platform version
+  int _platformVersion = 1;
+
   /// Quote Text
   String quoteText = "No Quote";
 
@@ -43,6 +50,11 @@ class HomeState extends State<Home> {
     refreshQuote();
   }
 
+
+  /// Add Rating to database
+  void addRating() {
+    Database(firestore: widget.firestore).uploadRating(currentQuote, _ratingStar, widget.auth.currentUser);
+  }
 
   /// Fetches Quote from server
   Future<Quote> fetchQuote() async {
@@ -66,29 +78,16 @@ class HomeState extends State<Home> {
     futureQuote = fetchQuote();
   }
 
-
-  @override
-  Widget build(BuildContext context) {
-    return Center(
-      child: SizedBox(
-          width: 350,
-          child: Column(children: [
-            createTextFromQuote(),
-            buttonRow()
-          ])),
-    );
-  }
-
-    /// Creates Text widget from quote
+  /// Creates Text widget from quote
   FutureBuilder<Quote> createTextFromQuote() {
     return FutureBuilder<Quote>(
       future: futureQuote,
       builder: (context, snapshot) {
         if (snapshot.hasData) {
           currentQuote = snapshot.data;
-          currentQuote.rating = 0;
-    
-          return new QuoteCard(quote: currentQuote, firestore: widget.firestore, user: widget.auth.currentUser,);
+          quoteText = snapshot.data.content;
+          authorText = snapshot.data.author;
+          return QuoteCard(quoteText, authorText);
         } else if (snapshot.hasError) {
           return Text("${snapshot.error}");
         }
@@ -98,39 +97,78 @@ class HomeState extends State<Home> {
     );
   }
 
-  /// Button Row
-  Row buttonRow() {
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.center,
-      children: [
-        IconButton(
-          icon: Icon(EvaIcons.refresh),
-          tooltip: 'Refresh quote',
-          onPressed: () {
-            setState(() {
-              refreshQuote();
-            });
-          },
-        ),
-  
-        IconButton(
-          icon: Icon(EvaIcons.twitter),
-          onPressed: () async {
-            SocialShare.shareTwitter(quoteText,
-                hashtags: ["quotes", "developer", "funny", "inspiring"],
-                url: "",
-                trailingText: "");
-          },
-        ),
-        IconButton(
-          icon: Icon(EvaIcons.copyOutline),
-          onPressed: () async {
-            SocialShare.copyToClipboard(
-              quoteText,
-            );
-          },
-        )
-      ],
+  @override
+  Widget build(BuildContext context) {
+    return Center(
+      child: SizedBox(
+          width: 350,
+          child: Column(children: [
+            createTextFromQuote(),
+            Text(
+              'Rating : $_ratingStar',
+              style: Theme.of(context).textTheme.bodyText1,
+            ),
+            SizedBox(height: 8),
+            RatingBar(
+              onRatingChanged: (rating) =>
+                  setState(() => _ratingStar = rating.toInt()),
+              filledIcon: Icons.star,
+              emptyIcon: Icons.star_border,
+            ),
+            IconButton(
+              icon: Icon(Icons.refresh),
+              tooltip: 'Refresh quote',
+              onPressed: () {
+                setState(() {
+                  refreshQuote();
+                });
+              },
+            ),
+            IconButton(
+                icon: Icon(Icons.upload_file),
+                onPressed: () {
+                  setState(() {
+                    addRating();
+                  });
+                }),
+            Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: <Widget>[
+                Text(
+                  'Running on: $_platformVersion\n',
+                  textAlign: TextAlign.center,
+                ),
+                RaisedButton(
+                  onPressed: () async {
+                    SocialShare.copyToClipboard(
+                      "This is Social Share plugin",
+                    ).then((data) {
+                      print(data);
+                    });
+                  },
+                  child: Text("Copy to clipboard"),
+                ),
+                RaisedButton(
+                  onPressed: () async {
+                    SocialShare.shareTwitter(quoteText,
+                            hashtags: [
+                              "quotes",
+                              "developer",
+                              "funny",
+                              "inspiring"
+                            ],
+                            url: "",
+                            trailingText: "")
+                        .then((data) {
+                      print(data);
+                    });
+                  },
+                  child: Text("Share on twitter"),
+                ),
+              ],
+            )
+          ])),
     );
   }
 }

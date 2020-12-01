@@ -12,9 +12,9 @@ class Quote {
   final String content;
 
   /// Rating
-  int rating = 0;
+  int rating;
 
-  Quote({this.id, this.author, this.content, this.rating});
+  Quote({this.id, this.author, this.content});
 
     factory Quote.fromJson(Map<String, dynamic> json) {
     return Quote(

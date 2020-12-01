@@ -14,7 +14,7 @@ class Database {
   Database({this.firestore});
 
   /// Save new quote with rating to database
-  Future<void> uploadRating(Quote quote, User localUser) {
+  Future<void> uploadRating(Quote quote, int rating, User localUser) {
     String quoteID = quote.id.toString();
 
     return firestore.collection("quotes")
@@ -24,7 +24,7 @@ class Database {
             'id': quote.id,
             'author': quote.author,
             'content': quote.content,
-            'rating': quote.rating
+            'rating': rating
           }
         })
         .then((value) => print("Quote added"))
@@ -51,8 +51,7 @@ class Database {
           List<QuoteCard> cards = [];
 
           snapshot.data.data().forEach((key, value) {
-            Quote quote = new Quote(content: value["content"],author: value["author"], rating: value["rating"], id: value["id"]);
-            cards.add(new QuoteCard(firestore: firestore, quote:quote, user:localUser));
+            cards.add(new QuoteCard(value["content"], value["author"]));
           });
           return ListView(padding: EdgeInsets.all(8), children: cards);
         }
