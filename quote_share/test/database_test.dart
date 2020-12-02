@@ -28,13 +28,13 @@ void main() {
   final Database database = Database(firestore: mockFirestore);
 
 
-  /// Test: Check if Sign in Anonymously works
-  test("Download personal Quotes", () async {
-    when(
-      mockFirestore.collection("collectionPath").doc("user").get(),
-    ).thenAnswer((realInvocation) => "Success");
+  // /// Test: Check if Sign in Anonymously works
+  // test("Download personal Quotes", () async {
+  //   when(
+  //     mockFirestore.collection("collectionPath").doc("user").get(),
+  //   ).thenAnswer((realInvocation) => "Success");
 
-    expect(await database.downloadPersonalQuotes(mockUser), "Success");
-  });
+  //   expect(await database.downloadPersonalQuotes(mockUser), "Success");
+  // });
   
 }

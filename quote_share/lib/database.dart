@@ -14,8 +14,10 @@ class Database {
   Database({this.firestore});
 
   /// Save new quote with rating to database
-  Future<void> uploadRating(Quote quote, User localUser) {
+  Future<void> uploadRating(Quote quote, User localUser, BuildContext context) {
     String quoteID = quote.id.toString();
+    final snackBarSuccess = SnackBar(content: Text('Quote has been saved'));
+    final snackBarFailed = SnackBar(content: Text('Failed to save the Quote'));
 
     return firestore.collection("quotes")
         .doc(localUser.uid)
@@ -27,16 +29,18 @@ class Database {
             'rating': quote.rating
           }
         })
-        .then((value) => print("Quote added"))
-        .catchError((error) => print("Failed to add Quote"));
+        .then((value) => Scaffold.of(context).showSnackBar(snackBarSuccess))
+        .catchError((error) => Scaffold.of(context).showSnackBar(snackBarFailed));
   }
 
-  Future<DocumentSnapshot> download(User localUser) {
+
+  /// Download quotes
+  Future<DocumentSnapshot> downloadQuotes(User localUser) {
     return firestore.collection("quotes")
         .doc(localUser.uid).get();
   }
 
-  /// Downloadfirestore.collection("quotes")
+  /// Download personal quotes
   FutureBuilder<DocumentSnapshot> downloadPersonalQuotes(User localUser) {
     return FutureBuilder<DocumentSnapshot>(
       future: firestore.collection("quotes")

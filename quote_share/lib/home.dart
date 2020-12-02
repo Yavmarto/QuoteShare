@@ -4,7 +4,6 @@ import 'dart:convert';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:eva_icons_flutter/eva_icons_flutter.dart';
 import 'package:flutter/material.dart';
-import 'package:quote_share/database.dart';
 import 'package:quote_share/quote.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
@@ -43,7 +42,6 @@ class HomeState extends State<Home> {
     refreshQuote();
   }
 
-
   /// Fetches Quote from server
   Future<Quote> fetchQuote() async {
     final response =
@@ -66,20 +64,16 @@ class HomeState extends State<Home> {
     futureQuote = fetchQuote();
   }
 
-
   @override
   Widget build(BuildContext context) {
     return Center(
       child: SizedBox(
           width: 350,
-          child: Column(children: [
-            createTextFromQuote(),
-            buttonRow()
-          ])),
+          child: Column(children: [createTextFromQuote(), buttonRow()])),
     );
   }
 
-    /// Creates Text widget from quote
+  /// Creates Text widget from quote
   FutureBuilder<Quote> createTextFromQuote() {
     return FutureBuilder<Quote>(
       future: futureQuote,
@@ -87,8 +81,12 @@ class HomeState extends State<Home> {
         if (snapshot.hasData) {
           currentQuote = snapshot.data;
           currentQuote.rating = 0;
-    
-          return new QuoteCard(quote: currentQuote, firestore: widget.firestore, user: widget.auth.currentUser,);
+
+          return new QuoteCard(
+            quote: currentQuote,
+            firestore: widget.firestore,
+            user: widget.auth.currentUser,
+          );
         } else if (snapshot.hasError) {
           return Text("${snapshot.error}");
         }
@@ -112,7 +110,6 @@ class HomeState extends State<Home> {
             });
           },
         ),
-  
         IconButton(
           icon: Icon(EvaIcons.twitter),
           onPressed: () async {

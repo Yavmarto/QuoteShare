@@ -1,4 +1,3 @@
-
 /// Implements Quote Object
 class Quote {
 

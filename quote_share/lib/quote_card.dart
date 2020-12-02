@@ -34,10 +34,10 @@ class QuoteCardState extends State<QuoteCard> {
 
 
   /// Add Rating to database
-  void addRating(int rating) {
+  void addRating(int rating, BuildContext context) {
     quote.rating = rating;
     Database(firestore: widget.firestore)
-        .uploadRating(quote, widget.user);
+        .uploadRating(quote, widget.user, context);
   }
 
  @override
@@ -46,8 +46,6 @@ class QuoteCardState extends State<QuoteCard> {
     if (quote.rating == null) {
       quote.rating = 0;
     }
-
-
 
     return Center(
       child:
@@ -61,17 +59,18 @@ class QuoteCardState extends State<QuoteCard> {
             subtitle: Text(widget.quote.author),
           ),
           SizedBox(height: 8),
-         getRatingBar()
+         getRatingBar(context)
         ],
       ),
     )); 
   }
 
-  RatingBar getRatingBar() {
+  /// Get rating bar
+  RatingBar getRatingBar(BuildContext context) {
     return new RatingBar(
             initialRating: quote.rating.toDouble(),
             onRatingChanged: (rating) {
-              addRating(rating.toInt());
+              addRating(rating.toInt(), context);
             },
             filledIcon: Icons.star,
             emptyIcon: Icons.star_border,

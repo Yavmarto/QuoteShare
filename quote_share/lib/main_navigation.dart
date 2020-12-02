@@ -21,8 +21,8 @@ class MainNavigation extends StatefulWidget {
 class MainNagivationState extends State<MainNavigation> {
   MainNagivationState(this.bartitle);
 
-  final FirebaseAuth _auth = FirebaseAuth.instance;
-  final FirebaseFirestore _firestore = FirebaseFirestore.instance;
+  final FirebaseAuth auth = FirebaseAuth.instance;
+  final FirebaseFirestore firestore = FirebaseFirestore.instance;
 
   /// Bar title
   final String bartitle;
@@ -32,22 +32,30 @@ class MainNagivationState extends State<MainNavigation> {
       TextStyle(fontSize: 30, fontWeight: FontWeight.bold);
 
   /// Selected index
-  int _selectedIndex = 0;
+  int selectedIndex = 0;
 
   /// Navigation Options
-  List<Widget> _widgetOptions = [];
+  List<Widget> navigationOptions = [];
 
   /// Switch selected index on tap
-  void _onItemTapped(int index) {
+  void onItemTapped(int index) {
     setState(() {
-      _selectedIndex = index;
+      selectedIndex = index;
     });
   }
 
   @override
   Widget build(BuildContext context) {
+    
+    // Add all navigation options
+    navigationOptions.addAll([
+              Home(firestore: firestore, auth: auth),
+              Personal(firestore: firestore, auth: auth)
+            ]);
+
+            
     return StreamBuilder(
-      stream: Auth(auth: _auth).user,
+      stream: Auth(auth: auth).user,
       builder: (BuildContext context, AsyncSnapshot<User> snapshot) {
         if (snapshot.connectionState == ConnectionState.active) {
           if (snapshot.data?.uid == null) {
@@ -57,18 +65,13 @@ class MainNagivationState extends State<MainNavigation> {
               ),
             );
           } else {
-            
-            _widgetOptions.addAll([
-              Home(firestore: _firestore, auth: _auth),
-              Personal(firestore: _firestore, auth: _auth)
-            ]);
-
             return app();
           }
         } else {
           return CircularProgressIndicator();
         }
       },
+      
     );
   }
 
@@ -83,7 +86,7 @@ class MainNagivationState extends State<MainNavigation> {
         appBar: AppBar(
           title: Text(bartitle),
         ),
-        body: _widgetOptions[_selectedIndex],
+        body: navigationOptions[selectedIndex],
         bottomNavigationBar: BottomNavigationBar(
           items: const <BottomNavigationBarItem>[
             BottomNavigationBarItem(
@@ -95,9 +98,9 @@ class MainNagivationState extends State<MainNavigation> {
               label: 'My Quotes',
             ),
           ],
-          currentIndex: _selectedIndex,
+          currentIndex: selectedIndex,
           selectedItemColor: Colors.blue,
-          onTap: _onItemTapped,
+          onTap: onItemTapped,
         ),
       ),
     );
