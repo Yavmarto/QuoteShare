@@ -6,10 +6,14 @@ import 'package:firebase_auth/firebase_auth.dart';
 
 /// Implements Personal Widget
 class Personal extends StatefulWidget{
+  const Personal({Key key, this.auth, this.firestore}) : super(key: key);
+
+  /// Firebase authentication
   final FirebaseAuth auth;
+
+  /// Firebase firestore
   final FirebaseFirestore firestore;
 
-  const Personal({Key key, this.auth, this.firestore}) : super(key: key);
     @override
   PersonalState createState() => new PersonalState();
 

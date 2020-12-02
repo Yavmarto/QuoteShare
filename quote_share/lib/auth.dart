@@ -1,13 +1,11 @@
 import 'package:firebase_auth/firebase_auth.dart';
 
-/// Authentication class
+/// Implements Authentication class
 class Auth {
+  Auth({this.auth});
 
   /// Firebase authentication
   final FirebaseAuth auth;
-
-  /// Firebase constructor
-  Auth({this.auth});
 
   /// User stream
   Stream<User> get user => auth.authStateChanges();

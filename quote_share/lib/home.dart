@@ -13,10 +13,13 @@ import 'package:social_share/social_share.dart';
 
 /// Implements Home Widget
 class Home extends StatefulWidget {
-  final FirebaseAuth auth;
-  final FirebaseFirestore firestore;
-
   const Home({Key key, this.auth, this.firestore}) : super(key: key);
+  
+  /// Firebase authentication
+  final FirebaseAuth auth;
+
+  /// Firebase firestore
+  final FirebaseFirestore firestore;
 
   @override
   HomeState createState() => new HomeState();
@@ -44,6 +47,8 @@ class HomeState extends State<Home> {
 
   /// Fetches Quote from server
   Future<Quote> fetchQuote() async {
+
+    /// Response
     final response =
         await http.get('http://quotes.stormconsultancy.co.uk/random.json');
 
@@ -69,7 +74,7 @@ class HomeState extends State<Home> {
     return Center(
       child: SizedBox(
           width: 350,
-          child: Column(children: [createTextFromQuote(), buttonRow()])),
+          child: Column(children: [createTextFromQuote(), createButtonRow()])),
     );
   }
 
@@ -96,8 +101,12 @@ class HomeState extends State<Home> {
     );
   }
 
-  /// Button Row
-  Row buttonRow() {
+  /// Create Button Row
+  Row createButtonRow() {
+
+    /// Snackbar copied
+    final copied = SnackBar(content: Text("Copied quote to clipboard"), backgroundColor: Colors.blue,);
+
     return Row(
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
@@ -125,6 +134,7 @@ class HomeState extends State<Home> {
             SocialShare.copyToClipboard(
               quoteText,
             );
+            Scaffold.of(context).showSnackBar(copied);
           },
         )
       ],

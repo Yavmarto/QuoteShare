@@ -1,5 +1,6 @@
 /// Implements Quote Object
 class Quote {
+  Quote({this.id, this.author, this.content, this.rating});
 
   /// Quote ID
   final int id;
@@ -12,8 +13,6 @@ class Quote {
 
   /// Rating
   int rating = 0;
-
-  Quote({this.id, this.author, this.content, this.rating});
 
     factory Quote.fromJson(Map<String, dynamic> json) {
     return Quote(

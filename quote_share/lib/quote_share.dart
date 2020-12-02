@@ -3,8 +3,9 @@ import 'package:flutter/material.dart';
 import 'package:quote_share/main_navigation.dart';
 
 
-/// Main Quote Share Widget
+/// Implements Main Quote Share Widget
 class QuoteShare extends StatelessWidget {
+  /// Title
   final String title = "Quote Share";
 
   @override

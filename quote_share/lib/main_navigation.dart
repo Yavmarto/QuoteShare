@@ -3,25 +3,28 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:quote_share/auth.dart';
 
-
 import 'package:quote_share/home.dart';
 import 'package:quote_share/personal.dart';
 
-/// Main Nagivation Widget
+/// Implements Main Nagivation Widget
 class MainNavigation extends StatefulWidget {
   MainNavigation({Key key, this.title}) : super(key: key);
 
+  /// Title
   final String title;
 
   @override
   MainNagivationState createState() => new MainNagivationState(title);
 }
 
-/// Main Navigation State
+/// Implements Main Navigation State
 class MainNagivationState extends State<MainNavigation> {
   MainNagivationState(this.bartitle);
 
+  /// Firebase authentication
   final FirebaseAuth auth = FirebaseAuth.instance;
+
+  /// Firebase Firestore
   final FirebaseFirestore firestore = FirebaseFirestore.instance;
 
   /// Bar title
@@ -65,7 +68,7 @@ class MainNagivationState extends State<MainNavigation> {
               ),
             );
           } else {
-            return app();
+            return createApp();
           }
         } else {
           return CircularProgressIndicator();
@@ -75,8 +78,8 @@ class MainNagivationState extends State<MainNavigation> {
     );
   }
 
-  /// Material app
-  MaterialApp app() {
+  /// Create Material app
+  MaterialApp createApp() {
     return MaterialApp(
       title: bartitle,
       theme: ThemeData(

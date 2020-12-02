@@ -1,14 +1,14 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:eva_icons_flutter/eva_icons_flutter.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:quote_share/database.dart';
 import 'package:quote_share/quote.dart';
 import 'package:rating_bar/rating_bar.dart';
 
-
-
 /// Implements Home Widget
 class QuoteCard extends StatefulWidget {
+  QuoteCard({Key key, this.quote, this.firestore, this.user}) : super(key: key);
 
   /// Quote
   final Quote quote;
@@ -19,19 +19,16 @@ class QuoteCard extends StatefulWidget {
   /// Authentication
   final User user;
 
-  QuoteCard({Key key, this.quote, this.firestore, this.user}): super(key: key);
-
   @override
   QuoteCardState createState() => new QuoteCardState(quote);
 }
 
 /// Implements Home State
-class QuoteCardState extends State<QuoteCard> {  
-  /// Quote
-  Quote quote;
-
+class QuoteCardState extends State<QuoteCard> {
   QuoteCardState(this.quote);
 
+  /// Quote
+  Quote quote;
 
   /// Add Rating to database
   void addRating(int rating, BuildContext context) {
@@ -40,40 +37,39 @@ class QuoteCardState extends State<QuoteCard> {
         .uploadRating(quote, widget.user, context);
   }
 
- @override
+  @override
   Widget build(BuildContext context) {
-  
+    // Set quote rating to 0 when quote is new
     if (quote.rating == null) {
       quote.rating = 0;
     }
 
     return Center(
-      child:
-    Card(
+        child: Card(
       child: Column(
         mainAxisSize: MainAxisSize.min,
         children: <Widget>[
           ListTile(
-            leading: Icon(Icons.short_text),
+            leading: Icon(EvaIcons.text),
             title: Text(widget.quote.content),
             subtitle: Text(widget.quote.author),
           ),
           SizedBox(height: 8),
-         getRatingBar(context)
+          getRatingBar(context)
         ],
       ),
-    )); 
+    ));
   }
 
   /// Get rating bar
   RatingBar getRatingBar(BuildContext context) {
     return new RatingBar(
-            initialRating: quote.rating.toDouble(),
-            onRatingChanged: (rating) {
-              addRating(rating.toInt(), context);
-            },
-            filledIcon: Icons.star,
-            emptyIcon: Icons.star_border,
-          );
+      initialRating: quote.rating.toDouble(),
+      onRatingChanged: (rating) {
+        addRating(rating.toInt(), context);
+      },
+      filledIcon: Icons.star,
+      emptyIcon: Icons.star_border,
+    );
   }
 }
