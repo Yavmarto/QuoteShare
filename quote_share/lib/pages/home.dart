@@ -1,14 +1,13 @@
 import 'dart:async';
-import 'dart:convert';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:eva_icons_flutter/eva_icons_flutter.dart';
 import 'package:flutter/material.dart';
-import 'package:quote_share/quote.dart';
+import 'package:quote_share/model/quote.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
-import 'package:http/http.dart' as http;
-import 'package:quote_share/quote_card.dart';
+import 'package:quote_share/viewmodel/quote_card.dart';
+import 'package:quote_share/services/webservice.dart';
 import 'package:social_share/social_share.dart';
 
 /// Implements Home Widget
@@ -45,41 +44,14 @@ class HomeState extends State<Home> {
     refreshQuote();
   }
 
-  /// Fetches Quote from server
-  Future<Quote> fetchQuote() async {
-
-    /// Response
-    final response =
-        await http.get('http://quotes.stormconsultancy.co.uk/random.json');
-
-    if (response.statusCode == 200) {
-      // If the server did return a 200 OK response,
-      // then parse the JSON.
-      createTextFromQuote();
-      return Quote.fromJson(jsonDecode(response.body));
-    } else {
-      // If the server did not return a 200 OK response,
-      // then throw an exception.
-      throw Exception('Failed to load quote');
-    }
-  }
-
   /// Refreshes quote
-  void refreshQuote() {
-    futureQuote = fetchQuote();
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    return Center(
-      child: SizedBox(
-          width: 350,
-          child: Column(children: [createTextFromQuote(), createButtonRow()])),
-    );
+  void refreshQuote() async {
+    futureQuote = Webservice().fetchQuote();
+    getQuoteView();
   }
 
   /// Creates Text widget from quote
-  FutureBuilder<Quote> createTextFromQuote() {
+  FutureBuilder<Quote> getQuoteView() {
     return FutureBuilder<Quote>(
       future: futureQuote,
       builder: (context, snapshot) {
@@ -102,7 +74,7 @@ class HomeState extends State<Home> {
   }
 
   /// Create Button Row
-  Row createButtonRow() {
+  Row getButtonRow() {
 
     /// Snackbar copied
     final copied = SnackBar(content: Text("Copied quote to clipboard"), backgroundColor: Colors.blue,);
@@ -140,4 +112,16 @@ class HomeState extends State<Home> {
       ],
     );
   }
+
+
+  @override
+  Widget build(BuildContext context) {
+    return Center(
+      child: SizedBox(
+          width: 350,
+          child: Column(children: [getQuoteView(), getButtonRow()])),
+    );
+  }
+
+
 }

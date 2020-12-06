@@ -4,8 +4,8 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mockito/mockito.dart';
-import 'package:quote_share/database.dart';
-import 'package:quote_share/firebase_app_mock.dart';
+import 'package:quote_share/services/database.dart';
+import 'package:quote_share/services/firebase_app_mock.dart';
 
 /// Mock User Class
 class MockUser extends Mock implements User {}

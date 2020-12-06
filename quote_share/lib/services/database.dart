@@ -1,8 +1,7 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
-import 'package:quote_share/quote.dart';
-import 'package:quote_share/quote_card.dart';
+import 'package:quote_share/model/quote.dart';
 
 /// Implements Database class
 class Database {
@@ -48,33 +47,4 @@ class Database {
     return firestore.collection("quotes").doc(localUser.uid).get();
   }
 
-  /// Download personal quotes
-  FutureBuilder<DocumentSnapshot> downloadPersonalQuotes(User localUser) {
-    return FutureBuilder<DocumentSnapshot>(
-      future: firestore.collection("quotes").doc(localUser.uid).get(),
-      builder:
-          (BuildContext context, AsyncSnapshot<DocumentSnapshot> snapshot) {
-        if (snapshot.hasError) {
-          return Text("Something went wrong");
-        }
-
-        if (snapshot.hasData) {
-          List<QuoteCard> cards = [];
-
-          snapshot.data.data().forEach((key, value) {
-            Quote quote = new Quote(
-                content: value["content"],
-                author: value["author"],
-                rating: value["rating"],
-                id: value["id"]);
-            cards.add(new QuoteCard(
-                firestore: firestore, quote: quote, user: localUser));
-          });
-          return ListView(padding: EdgeInsets.all(8), children: cards);
-        }
-
-        return CircularProgressIndicator();
-      },
-    );
-  }
 }

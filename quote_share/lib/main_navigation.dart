@@ -1,10 +1,10 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:quote_share/auth.dart';
+import 'package:quote_share/services/auth.dart';
 
-import 'package:quote_share/home.dart';
-import 'package:quote_share/personal.dart';
+import 'package:quote_share/pages/home.dart';
+import 'package:quote_share/pages/personal.dart';
 
 /// Implements Main Nagivation Widget
 class MainNavigation extends StatefulWidget {

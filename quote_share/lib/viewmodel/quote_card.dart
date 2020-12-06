@@ -2,8 +2,8 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:eva_icons_flutter/eva_icons_flutter.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:quote_share/database.dart';
-import 'package:quote_share/quote.dart';
+import 'package:quote_share/services/database.dart';
+import 'package:quote_share/model/quote.dart';
 import 'package:rating_bar/rating_bar.dart';
 
 /// Implements Home Widget
