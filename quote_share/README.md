@@ -1,16 +1,8 @@
-# quote_share
+# QuoteShare
+Quote sharing demo app in Flutter
 
-A new Flutter project.
 
-## Getting Started
+Known bugs:
 
-This project is a starting point for a Flutter application.
-
-A few resources to get you started if this is your first Flutter project:
-
-- [Lab: Write your first Flutter app](https://flutter.dev/docs/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://flutter.dev/docs/cookbook)
-
-For help getting started with Flutter, view our
-[online documentation](https://flutter.dev/docs), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+1. Doesn't work on iOS
+2. Star rating doesn’t reset on new quote refresh

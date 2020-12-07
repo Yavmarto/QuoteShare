@@ -44,10 +44,10 @@ class QuoteCardState extends State<QuoteCard> {
       quote.rating = 0;
     }
 
-    return Center(
-        child: Card(
-      child: Column(
-        mainAxisSize: MainAxisSize.min,
+    return Card(
+      child: Padding(
+        padding: EdgeInsets.all(8.0),
+        child: Column(
         children: <Widget>[
           ListTile(
             leading: Icon(EvaIcons.text),
@@ -57,8 +57,9 @@ class QuoteCardState extends State<QuoteCard> {
           SizedBox(height: 8),
           getRatingBar(context)
         ],
-      ),
-    ));
+      )),
+
+    );
   }
 
   /// Get rating bar

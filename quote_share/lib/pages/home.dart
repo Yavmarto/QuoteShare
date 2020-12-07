@@ -118,9 +118,6 @@ class HomeState extends State<Home> {
   @override
   Widget build(BuildContext context) {
     return Center(
-      child: SizedBox(
-          width: 350,
-          child: Column(children: [getQuoteView(), getButtonRow()])),
-    );
+      child: Column(children: [getQuoteView(), getButtonRow()]));
   }
 }
