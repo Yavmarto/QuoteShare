@@ -13,7 +13,7 @@ import 'package:social_share/social_share.dart';
 /// Implements Home Widget
 class Home extends StatefulWidget {
   const Home({Key key, this.auth, this.firestore}) : super(key: key);
-  
+
   /// Firebase authentication
   final FirebaseAuth auth;
 
@@ -75,9 +75,11 @@ class HomeState extends State<Home> {
 
   /// Create Button Row
   Row getButtonRow() {
-
     /// Snackbar copied
-    final copied = SnackBar(content: Text("Copied quote to clipboard"), backgroundColor: Colors.blue,);
+    final copied = SnackBar(
+      content: Text("Copied quote to clipboard"),
+      backgroundColor: Colors.blue,
+    );
 
     return Row(
       mainAxisAlignment: MainAxisAlignment.center,
@@ -113,7 +115,6 @@ class HomeState extends State<Home> {
     );
   }
 
-
   @override
   Widget build(BuildContext context) {
     return Center(
@@ -122,6 +123,4 @@ class HomeState extends State<Home> {
           child: Column(children: [getQuoteView(), getButtonRow()])),
     );
   }
-
-
 }

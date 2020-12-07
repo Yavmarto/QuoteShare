@@ -20,7 +20,6 @@ class Personal extends StatefulWidget {
 
 /// Implements Personal State
 class PersonalState extends State<Personal> {
-
   @override
   Widget build(BuildContext context) {
     return FutureBuilder<List<QuoteCard>>(
@@ -28,11 +27,12 @@ class PersonalState extends State<Personal> {
             .fetchPersonalQuotes(widget.firestore, widget.auth.currentUser),
         builder: (context, snapshot) {
           if (snapshot.hasData) {
-            print(snapshot.data);
             return ListView(
                 padding: EdgeInsets.all(8), children: snapshot.data);
           }
-          return Center(child: Text("You have no personal quotes yet"),);
+          return Center(
+            child: Text("You have no personal quotes yet"),
+          );
         });
   }
 }

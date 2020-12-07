@@ -46,5 +46,4 @@ class Database {
   Future<DocumentSnapshot> downloadQuotes(User localUser) {
     return firestore.collection("quotes").doc(localUser.uid).get();
   }
-
 }

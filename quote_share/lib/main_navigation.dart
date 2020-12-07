@@ -49,14 +49,12 @@ class MainNagivationState extends State<MainNavigation> {
 
   @override
   Widget build(BuildContext context) {
-    
     // Add all navigation options
     navigationOptions.addAll([
-              Home(firestore: firestore, auth: auth),
-              Personal(firestore: firestore, auth: auth)
-            ]);
+      Home(firestore: firestore, auth: auth),
+      Personal(firestore: firestore, auth: auth)
+    ]);
 
-            
     return StreamBuilder(
       stream: Auth(auth: auth).user,
       builder: (BuildContext context, AsyncSnapshot<User> snapshot) {
@@ -74,7 +72,6 @@ class MainNagivationState extends State<MainNavigation> {
           return CircularProgressIndicator();
         }
       },
-      
     );
   }
 

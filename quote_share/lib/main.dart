@@ -4,14 +4,12 @@ import 'package:flutter/services.dart';
 
 import 'package:quote_share/main_navigation.dart';
 
-void main() async{
+void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
   SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp])
       .then((value) => runApp(App()));
 }
-
-
 
 /// Implements App
 class App extends StatelessWidget {
@@ -21,12 +19,12 @@ class App extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-            title: title,
-            theme: ThemeData(
-              primarySwatch: Colors.green,
-              visualDensity: VisualDensity.adaptivePlatformDensity,
-            ),
-            home: MainNavigation(title: title),
-          );
+      title: title,
+      theme: ThemeData(
+        primarySwatch: Colors.green,
+        visualDensity: VisualDensity.adaptivePlatformDensity,
+      ),
+      home: MainNavigation(title: title),
+    );
   }
 }

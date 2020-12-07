@@ -14,6 +14,7 @@ class Quote {
   /// Rating
   int rating = 0;
 
+  /// Return Quote from Json
   factory Quote.fromJson(Map<String, dynamic> json) {
     return Quote(
       id: json['id'],
